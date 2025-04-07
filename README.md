@@ -16,3 +16,8 @@ You can install it locally from the repo:
 git clone https://github.com/GravityPHY/epitope_analysis.git
 cd epitope_analysis
 pip install .
+```
+or 
+```bash
+pip install git+https://github.com/yourusername/analysis_tool.git
+```
