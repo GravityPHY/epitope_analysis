@@ -19,5 +19,5 @@ pip install .
 ```
 or 
 ```bash
-pip install git+https://github.com/yourusername/analysis_tool.git
+pip install git+https://github.com/GravityPHY/epitope_analysis.git
 ```
