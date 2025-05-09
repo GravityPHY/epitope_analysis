@@ -1,3 +1,8 @@
+# Instruction of using the script
+# The anarci_result is the return from anarci(sequence,scheme=scheme),
+#  where sequence is a list of tuples in the format (query_name, sequence(str))
+# The function in this script will annotate the cdr loops if the sequence is from antibody
+# Currently only support chothia and imgt
 import os
 from anarci import anarci,number
 
