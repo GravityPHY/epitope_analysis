@@ -1,5 +1,4 @@
 import os
-
 from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 from Bio import SeqIO, Align, pairwise2

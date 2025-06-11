@@ -1,5 +1,4 @@
 import os
-
 from typing import Any, Dict, List, Mapping, Optional, Tuple
 
 import numpy as np
@@ -10,16 +9,46 @@ from Bio.PDB.Structure import Structure
 
 from ..common import utils
 
+# step 1 convert the bfactor value to rankings-> score
+# align every structure to reference structure
+# sum the ranks from different structures
 
 def majority_vote(structures:List[Structure], path):
     """
-    The first structure in the structures list will be the reference structure
+    The first structure in the structures list will be the reference structure,
+    which means the result will be projected to the reference structure.
     Args:
         structures (list): list of PDB structures
         path (pathlib.Path): saving path
     Returns:
         None
     """
+    project_structure = copy.copy(structures[0])
+    atom_set_list = [] * len(structures)
+    for i, structure in enumerate(structures):
+        for model in structure:
+            for chain in model:
+                for residue in chain:
+                    try:
+                        atom_set_list[i].append(residue['CA'])
+                    except:
+                        pass
+
+    # vote on atom_set_list
+    for models in zip(*[project_structure] + structures):
+        for chains in zip(*models):
+            for residues in zip(*chains):
+                for atoms in zip(*residues):
+                    atom_p, atom_rest = atoms[0], atoms[1:]
+                    sum_bfactor = sum([atom.get_bfactor()  for atom in atom_rest])
+                    atom_p.set_bfactor(sum_bfactor)
+    if path is not None:
+        io = PDBIO()
+        io.set_structure(project_structure)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        io.save(path)
+    return project_structure
+
 
 def borda_score(tuple:List[Tuple])->List[Tuple]:
     """
